@@ -5,17 +5,9 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Design system definition.
- *
- * The @theme inline block maps CSS custom properties to Tailwind utility
- * classes (e.g. --color-primary -> bg-primary, text-primary).
- *
- * The :root and .dark blocks define the actual color values using oklch.
- * All colors MUST use oklch format.
- *
- * To add a new semantic color:
- * 1. Add the variable to :root (light value) and .dark (dark value)
- * 2. Register it in @theme inline as --color-<name>: var(--<name>)
+ * iClub XP — gamified loyalty progression design system.
+ * All colors in oklch. Motion tokens live here too so the Motion Lab can
+ * scale the whole screen's energy from one place.
  */
 
 @theme inline {
@@ -59,77 +51,138 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  /* iClub brand */
+  --color-grape: var(--grape);
+  --color-grape-deep: var(--grape-deep);
+  --color-grape-soft: var(--grape-soft);
+  --color-ember: var(--ember);
+  --color-ember-soft: var(--ember-soft);
+  --color-blossom: var(--blossom);
+  --color-blossom-soft: var(--blossom-soft);
+  --color-mint: var(--mint);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+
+  --font-display: "Baloo 2", "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
+  --radius: 1rem;
+
+  --background: oklch(0.975 0.006 300);
+  --foreground: oklch(0.22 0.03 290);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
+  --card-foreground: oklch(0.22 0.03 290);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.984 0.003 247.858);
-  --sidebar-foreground: oklch(0.129 0.042 264.695);
-  --sidebar-primary: oklch(0.208 0.042 265.755);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.968 0.007 247.896);
-  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
-  --sidebar-border: oklch(0.929 0.013 255.508);
-  --sidebar-ring: oklch(0.704 0.04 256.788);
+  --popover-foreground: oklch(0.22 0.03 290);
+  --primary: oklch(0.52 0.22 296);
+  --primary-foreground: oklch(0.99 0.005 300);
+  --secondary: oklch(0.96 0.015 300);
+  --secondary-foreground: oklch(0.32 0.09 296);
+  --muted: oklch(0.965 0.01 300);
+  --muted-foreground: oklch(0.56 0.03 292);
+  --accent: oklch(0.95 0.03 30);
+  --accent-foreground: oklch(0.45 0.17 40);
+  --destructive: oklch(0.6 0.23 27);
+  --destructive-foreground: oklch(0.99 0.005 300);
+  --border: oklch(0.925 0.012 300);
+  --input: oklch(0.925 0.012 300);
+  --ring: oklch(0.52 0.22 296);
+  --chart-1: oklch(0.52 0.22 296);
+  --chart-2: oklch(0.7 0.19 40);
+  --chart-3: oklch(0.68 0.2 5);
+  --chart-4: oklch(0.75 0.16 85);
+  --chart-5: oklch(0.62 0.16 200);
+  --sidebar: oklch(0.99 0.004 300);
+  --sidebar-foreground: oklch(0.22 0.03 290);
+  --sidebar-primary: oklch(0.52 0.22 296);
+  --sidebar-primary-foreground: oklch(0.99 0.005 300);
+  --sidebar-accent: oklch(0.96 0.015 300);
+  --sidebar-accent-foreground: oklch(0.32 0.09 296);
+  --sidebar-border: oklch(0.925 0.012 300);
+  --sidebar-ring: oklch(0.52 0.22 296);
+
+  /* Brand palette */
+  --grape: oklch(0.54 0.23 296);
+  --grape-deep: oklch(0.4 0.2 295);
+  --grape-soft: oklch(0.94 0.04 300);
+  --ember: oklch(0.7 0.19 42);
+  --ember-soft: oklch(0.95 0.045 55);
+  --blossom: oklch(0.67 0.2 5);
+  --blossom-soft: oklch(0.95 0.04 5);
+  --mint: oklch(0.72 0.16 165);
+  --surface: oklch(1 0 0);
+  --surface-2: oklch(0.98 0.006 300);
+  --ink: oklch(0.22 0.03 290);
+  --ink-soft: oklch(0.56 0.03 292);
+
+  /* Gradients */
+  --gradient-hero: linear-gradient(
+    115deg,
+    oklch(0.85 0.09 300) 0%,
+    oklch(0.9 0.07 340) 45%,
+    oklch(0.92 0.08 55) 100%
+  );
+  --gradient-xp: linear-gradient(
+    90deg,
+    oklch(0.5 0.23 296) 0%,
+    oklch(0.6 0.22 330) 55%,
+    oklch(0.72 0.2 40) 100%
+  );
+  --gradient-grape: linear-gradient(135deg, oklch(0.5 0.23 296), oklch(0.62 0.21 320));
+  --gradient-ember: linear-gradient(135deg, oklch(0.72 0.19 55), oklch(0.66 0.22 25));
+  --gradient-blossom: linear-gradient(135deg, oklch(0.72 0.19 355), oklch(0.62 0.22 320));
+  --gradient-premium: linear-gradient(
+    120deg,
+    oklch(0.88 0.08 320) 0%,
+    oklch(0.92 0.07 20) 50%,
+    oklch(0.86 0.09 300) 100%
+  );
+
+  /* Shadows */
+  --shadow-card: 0 8px 24px -14px oklch(0.4 0.12 296 / 0.35);
+  --shadow-lift: 0 18px 40px -18px oklch(0.4 0.16 296 / 0.5);
+  --shadow-glow-grape: 0 0 0 0 oklch(0.54 0.23 296 / 0.45);
+  --shadow-glow-ember: 0 0 18px 2px oklch(0.7 0.19 42 / 0.5);
+
+  /* Motion scale — Motion Lab overrides these on <html> */
+  --motion-scale: 1;
+  --motion-amp: 1;
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out-game: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
-  --primary-foreground: oklch(0.208 0.042 265.755);
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
+  --background: oklch(0.16 0.03 292);
+  --foreground: oklch(0.97 0.006 300);
+  --card: oklch(0.22 0.04 293);
+  --card-foreground: oklch(0.97 0.006 300);
+  --popover: oklch(0.22 0.04 293);
+  --popover-foreground: oklch(0.97 0.006 300);
+  --primary: oklch(0.66 0.21 300);
+  --primary-foreground: oklch(0.15 0.03 292);
+  --secondary: oklch(0.28 0.05 293);
+  --secondary-foreground: oklch(0.97 0.006 300);
+  --muted: oklch(0.28 0.05 293);
+  --muted-foreground: oklch(0.72 0.03 295);
+  --accent: oklch(0.3 0.07 40);
+  --accent-foreground: oklch(0.95 0.04 55);
+  --destructive: oklch(0.7 0.19 22);
+  --destructive-foreground: oklch(0.97 0.006 300);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: oklch(0.66 0.21 300);
+  --surface: oklch(0.22 0.04 293);
+  --surface-2: oklch(0.25 0.045 293);
+  --ink: oklch(0.97 0.006 300);
+  --ink-soft: oklch(0.72 0.03 295);
+  --grape-soft: oklch(0.3 0.07 297);
+  --ember-soft: oklch(0.3 0.06 45);
+  --blossom-soft: oklch(0.3 0.06 5);
 }
 
 @layer base {
@@ -140,5 +193,626 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+}
+
+/* ============================================================
+   KEYFRAMES — every one is transform/opacity/filter only (GPU)
+   ============================================================ */
+
+@keyframes iclub-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, calc(28px * var(--motion-amp)), 0) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes iclub-drop {
+  from {
+    opacity: 0;
+    transform: translate3d(0, calc(-18px * var(--motion-amp)), 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes iclub-pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(calc(1 + 0.18 * var(--motion-amp)));
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes iclub-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes iclub-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(calc(1 + 0.08 * var(--motion-amp)));
+  }
+}
+
+@keyframes iclub-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  35% {
+    transform: translate3d(0, calc(-4px * var(--motion-amp)), 0) rotate(calc(-4deg * var(--motion-amp)));
+  }
+  70% {
+    transform: translate3d(0, calc(-2px * var(--motion-amp)), 0) rotate(calc(3deg * var(--motion-amp)));
+  }
+}
+
+@keyframes iclub-wiggle {
+  0%,
+  88%,
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+  91% {
+    transform: rotate(calc(-9deg * var(--motion-amp))) scale(1.06);
+  }
+  94% {
+    transform: rotate(calc(9deg * var(--motion-amp))) scale(1.06);
+  }
+  97% {
+    transform: rotate(calc(-4deg * var(--motion-amp))) scale(1.02);
+  }
+}
+
+@keyframes iclub-shine {
+  0% {
+    transform: translateX(-140%) skewX(-18deg);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.9;
+  }
+  45% {
+    opacity: 0.9;
+  }
+  60%,
+  100% {
+    transform: translateX(240%) skewX(-18deg);
+    opacity: 0;
+  }
+}
+
+@keyframes iclub-energy {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes iclub-pulse-ring {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.75;
+  }
+  80% {
+    opacity: 0;
+  }
+  100% {
+    transform: scale(calc(1.6 + 0.5 * var(--motion-amp)));
+    opacity: 0;
+  }
+}
+
+@keyframes iclub-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes iclub-shake {
+  0%,
+  100% {
+    transform: translateX(0) rotate(0);
+  }
+  20% {
+    transform: translateX(-4px) rotate(-7deg);
+  }
+  40% {
+    transform: translateX(4px) rotate(7deg);
+  }
+  60% {
+    transform: translateX(-3px) rotate(-5deg);
+  }
+  80% {
+    transform: translateX(2px) rotate(3deg);
+  }
+}
+
+@keyframes iclub-tada {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.3);
+  }
+  55% {
+    transform: scale(0.94);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes iclub-sparkle {
+  0% {
+    transform: scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  40% {
+    transform: scale(1) rotate(90deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0) rotate(180deg);
+    opacity: 0;
+  }
+}
+
+@keyframes iclub-orbit {
+  from {
+    transform: rotate(0deg) translateX(22px) rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg) translateX(22px) rotate(-360deg);
+  }
+}
+
+@keyframes iclub-coin-pop {
+  0%,
+  70%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  78% {
+    transform: translateY(-5px) scale(1.12);
+  }
+  86% {
+    transform: translateY(1px) scale(0.96);
+  }
+}
+
+@keyframes iclub-cart {
+  0%,
+  70%,
+  100% {
+    transform: translateX(0);
+  }
+  80% {
+    transform: translateX(4px) rotate(4deg);
+  }
+  90% {
+    transform: translateX(-3px) rotate(-3deg);
+  }
+}
+
+@keyframes iclub-scanline {
+  0% {
+    transform: translateY(-120%);
+    opacity: 0;
+  }
+  20%,
+  75% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(120%);
+    opacity: 0;
+  }
+}
+
+@keyframes iclub-tick {
+  0%,
+  92%,
+  100% {
+    transform: rotate(0deg);
+  }
+  95% {
+    transform: rotate(14deg);
+  }
+  98% {
+    transform: rotate(-8deg);
+  }
+}
+
+@keyframes iclub-vibrate {
+  0%,
+  80%,
+  100% {
+    transform: translate(0, 0) rotate(0);
+  }
+  84% {
+    transform: translate(-1.5px, 1px) rotate(-3deg);
+  }
+  88% {
+    transform: translate(1.5px, -1px) rotate(3deg);
+  }
+  92% {
+    transform: translate(-1px, 0) rotate(-2deg);
+  }
+}
+
+@keyframes iclub-gradient-drift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes iclub-glow-soft {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes iclub-flash {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  25% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+
+@keyframes iclub-press {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(0.95);
+  }
+  70% {
+    transform: scale(1.045);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes iclub-xp-float-up {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 6px, 0) scale(0.8);
+  }
+  20% {
+    opacity: 1;
+    transform: translate3d(0, -4px, 0) scale(1.15);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(0, -52px, 0) scale(0.95);
+  }
+}
+
+@keyframes iclub-orb-fly {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.5);
+    opacity: 0;
+  }
+  12% {
+    transform: translate3d(calc(var(--dx) * 0.1), calc(var(--dy) * 0.02 - 26px), 0) scale(1.15);
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(var(--dx), var(--dy), 0) scale(0.45);
+    opacity: 0;
+  }
+}
+
+@keyframes iclub-confetti {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(var(--cx), var(--cy), 0) rotate(var(--cr)) scale(0.5);
+    opacity: 0;
+  }
+}
+
+@keyframes iclub-burst {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(var(--cx), var(--cy), 0) scale(0);
+    opacity: 0;
+  }
+}
+
+@keyframes iclub-lock-open {
+  0% {
+    transform: rotate(0) translateY(0);
+  }
+  25% {
+    transform: rotate(-12deg) translateY(0);
+  }
+  50% {
+    transform: rotate(12deg) translateY(-2px);
+  }
+  75% {
+    transform: rotate(-20deg) translateY(-8px) scale(1.1);
+  }
+  100% {
+    transform: rotate(-40deg) translateY(-26px) scale(0.4);
+    opacity: 0;
+  }
+}
+
+@keyframes iclub-card-reveal {
+  0% {
+    transform: rotateY(90deg) scale(0.9);
+    opacity: 0;
+  }
+  60% {
+    transform: rotateY(-10deg) scale(1.04);
+    opacity: 1;
+  }
+  100% {
+    transform: rotateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes iclub-screen-glow {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes iclub-step-energy {
+  0% {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  100% {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+
+@utility motion-stage {
+  opacity: 0;
+  animation: iclub-rise calc(560ms * var(--motion-scale)) var(--ease-out-game) both;
+  animation-delay: var(--d, 0ms);
+}
+
+@utility motion-stage-drop {
+  opacity: 0;
+  animation: iclub-drop calc(500ms * var(--motion-scale)) var(--ease-out-game) both;
+  animation-delay: var(--d, 0ms);
+}
+
+@utility motion-stage-pop {
+  opacity: 0;
+  animation: iclub-pop-in calc(620ms * var(--motion-scale)) var(--ease-spring) both;
+  animation-delay: var(--d, 0ms);
+}
+
+@utility motion-stage-fade {
+  opacity: 0;
+  animation: iclub-fade calc(600ms * var(--motion-scale)) ease-out both;
+  animation-delay: var(--d, 0ms);
+}
+
+@utility idle-float {
+  animation: iclub-float calc(4200ms * var(--motion-scale)) ease-in-out infinite;
+  animation-delay: var(--d, 0ms);
+}
+
+@utility idle-wiggle {
+  animation: iclub-wiggle calc(5200ms * var(--motion-scale)) ease-in-out infinite;
+  animation-delay: var(--d, 0ms);
+}
+
+@utility idle-breathe {
+  animation: iclub-breathe calc(2600ms * var(--motion-scale)) ease-in-out infinite;
+  animation-delay: var(--d, 0ms);
+}
+
+@utility idle-coin {
+  animation: iclub-coin-pop calc(4600ms * var(--motion-scale)) ease-in-out infinite;
+  animation-delay: var(--d, 0ms);
+}
+
+@utility idle-cart {
+  animation: iclub-cart calc(4000ms * var(--motion-scale)) ease-in-out infinite;
+  animation-delay: var(--d, 0ms);
+}
+
+@utility idle-tick {
+  animation: iclub-tick calc(6000ms * var(--motion-scale)) ease-in-out infinite;
+  animation-delay: var(--d, 0ms);
+}
+
+@utility idle-vibrate {
+  animation: iclub-vibrate calc(3800ms * var(--motion-scale)) ease-in-out infinite;
+  animation-delay: var(--d, 0ms);
+}
+
+@utility idle-spin-slow {
+  animation: iclub-spin calc(9000ms * var(--motion-scale)) linear infinite;
+}
+
+@utility drift-gradient {
+  background-size: 220% 220%;
+  animation: iclub-gradient-drift calc(7000ms * var(--motion-scale)) ease-in-out infinite;
+}
+
+@utility press-spring {
+  transition:
+    transform 180ms var(--ease-spring),
+    box-shadow 220ms ease;
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+@utility quest-lift {
+  transition:
+    transform 260ms var(--ease-spring),
+    box-shadow 260ms ease;
+  &:hover {
+    transform: translateY(-3px) scale(1.008);
+    box-shadow: var(--shadow-lift);
+  }
+  &:active {
+    transform: scale(0.985);
+  }
+}
+
+@utility shine-sweep {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      100deg,
+      transparent 30%,
+      oklch(1 0 0 / 0.55) 50%,
+      transparent 70%
+    );
+    animation: iclub-shine calc(4200ms * var(--motion-scale)) ease-in-out infinite;
+    animation-delay: var(--d, 0ms);
+    pointer-events: none;
+  }
+}
+
+@utility bar-energy {
+  position: relative;
+  overflow: hidden;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      oklch(1 0 0 / 0.6) 45%,
+      oklch(1 0 0 / 0.15) 60%,
+      transparent
+    );
+    animation: iclub-energy calc(1900ms * var(--motion-scale)) linear infinite;
+    pointer-events: none;
+  }
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Motion Lab kill-switches */
+.mo-off-entrance [class*="motion-stage"] {
+  animation: none !important;
+  opacity: 1 !important;
+}
+.mo-off-idle .idle-float,
+.mo-off-idle .idle-wiggle,
+.mo-off-idle .idle-breathe,
+.mo-off-idle .idle-coin,
+.mo-off-idle .idle-cart,
+.mo-off-idle .idle-tick,
+.mo-off-idle .idle-vibrate,
+.mo-off-idle .idle-spin-slow,
+.mo-off-idle .drift-gradient {
+  animation: none !important;
+}
+.mo-off-shine .shine-sweep::after {
+  animation: none !important;
+  opacity: 0 !important;
+}
+.mo-off-barglow .bar-energy::after {
+  animation: none !important;
+  opacity: 0 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  [class*="motion-stage"] {
+    opacity: 1 !important;
   }
 }

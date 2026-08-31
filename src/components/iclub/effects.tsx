@@ -92,7 +92,7 @@ export function FxProvider({ children }: { children: ReactNode }) {
           cx: (Math.random() - 0.5) * spreadX * 2,
           cy: -Math.random() * spreadY + (kind === "confetti" ? 120 : 10),
           cr: Math.random() * 720 - 360,
-          color: CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
+          color: CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)] ?? "var(--grape)",
           size: kind === "confetti" ? 5 + Math.random() * 6 : 3 + Math.random() * 4,
           rounded: Math.random() > 0.5,
           duration: kind === "confetti" ? 900 + Math.random() * 700 : 520 + Math.random() * 260,

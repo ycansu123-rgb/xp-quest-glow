@@ -73,7 +73,7 @@ function Screen() {
           const crossed = REWARD_NODES.filter((n) => prev < n.xp && next >= n.xp);
           if (crossed.length) {
             const top = crossed[crossed.length - 1];
-            window.setTimeout(() => setJustUnlocked(top.xp), 260);
+            if (top) window.setTimeout(() => setJustUnlocked(top.xp), 260);
             window.setTimeout(() => setJustUnlocked(null), 2600);
           }
           return next;

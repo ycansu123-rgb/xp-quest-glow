@@ -34,13 +34,16 @@ export const Route = createFileRoute("/")({
 function Page() {
   return (
     <MotionLabProvider>
-      <FxProvider>
-        <Screen />
-        <MotionLabPanel />
-      </FxProvider>
+      <QuestSimProvider>
+        <FxProvider>
+          <Screen />
+          <MotionLabPanel />
+        </FxProvider>
+      </QuestSimProvider>
     </MotionLabProvider>
   );
 }
+
 
 function Screen() {
   const { on, haptic, replayKey } = useMotionLab();

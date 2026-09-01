@@ -328,7 +328,7 @@ export function Quests({ onEarnXp }: { onEarnXp: (amount: number, el: HTMLElemen
 
       {doneIds.length > 0 && (
         <div className="mt-6">
-          <h3 className="flex items-center gap-1.5 text-xs font-extrabold tracking-wide text-ink-soft uppercase [animation:iclub-rise-in_520ms_cubic-bezier(0.16,1,0.3,1)_both]">
+          <h3 className="flex items-center gap-1.5 text-xs font-extrabold tracking-wide text-ink-soft uppercase [animation:iclub-rise_520ms_cubic-bezier(0.16,1,0.3,1)_both]">
             <Check className="size-3.5 text-mint" strokeWidth={4} />
             Tamamlanan Görevler
           </h3>

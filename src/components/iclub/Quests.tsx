@@ -363,7 +363,6 @@ function QuestCard({
   phase,
   steps,
   onAdvanceStep,
-  onComplete,
   registerCard,
   registerXp,
 }: {
@@ -372,12 +371,12 @@ function QuestCard({
   phase: Phase;
   steps: number;
   onAdvanceStep: (el: HTMLElement) => void;
-  onComplete: (el: HTMLElement | null) => void;
   registerCard: (el: HTMLElement | null) => void;
   registerXp: (el: HTMLElement | null) => void;
 }) {
-  const { on } = useMotionLab();
+  const { on, haptic } = useMotionLab();
   const Icon = q.icon;
+
   const celebrating = phase === "celebrate" || phase === "moving";
   const finished = phase !== "idle";
   const [stage, setStage] = useState({ burst: false, check: false, xp: false, banner: false });

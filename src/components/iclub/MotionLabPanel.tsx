@@ -64,6 +64,30 @@ export function MotionLabPanel() {
           </div>
 
           <p className="mt-3 text-[10px] font-bold tracking-wide text-ink-soft uppercase">
+            Page entry completion
+          </p>
+          <div className="mt-1.5 grid grid-cols-2 gap-1">
+            {[1, 2, 3, 5].map((n) => (
+              <button
+                key={n}
+                type="button"
+                onClick={() => simulate(n, QUEST_IDS)}
+                className="rounded-lg bg-secondary px-1.5 py-1.5 text-[10px] font-bold text-secondary-foreground"
+              >
+                Simulate {n} Completed
+              </button>
+            ))}
+            <button
+              type="button"
+              onClick={resetCompletion}
+              className="col-span-2 rounded-lg bg-muted px-1.5 py-1.5 text-[10px] font-bold text-ink-soft"
+            >
+              Reset Completion State
+            </button>
+          </div>
+
+
+          <p className="mt-3 text-[10px] font-bold tracking-wide text-ink-soft uppercase">
             Effects
           </p>
           <ul className="mt-1.5 space-y-0.5">

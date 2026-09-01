@@ -7,11 +7,15 @@ import {
   useMotionLab,
   type MotionLevel,
 } from "@/lib/motion-lab";
+import { useQuestSim } from "@/lib/quest-sim";
+import { QUEST_IDS } from "@/components/iclub/Quests";
 import { cn } from "@/lib/utils";
 
 export function MotionLabPanel() {
   const { level, setLevel, flags, toggle, replay } = useMotionLab();
+  const { simulate, resetCompletion } = useQuestSim();
   const [open, setOpen] = useState(false);
+
 
   return (
     <>

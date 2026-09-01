@@ -2,6 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { MotionLabProvider, useMotionLab } from "@/lib/motion-lab";
+import { QuestSimProvider } from "@/lib/quest-sim";
+
 import { FxProvider, useFx } from "@/components/iclub/effects";
 import { REWARD_NODES, XpHero } from "@/components/iclub/XpHero";
 import { Quests } from "@/components/iclub/Quests";

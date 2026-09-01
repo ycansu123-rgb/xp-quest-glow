@@ -120,22 +120,32 @@ const T = {
 
 type Phase = "idle" | "celebrate" | "moving" | "done";
 
+export const QUEST_IDS = QUESTS.map((q) => q.id);
+
+/** gap between two queued celebrations */
+const QUEUE_GAP = 320;
+/** quests celebrated with the full sequence before switching to condensed mode */
+const FULL_CELEBRATION_LIMIT = 3;
+
 export function Quests({ onEarnXp }: { onEarnXp: (amount: number, el: HTMLElement | null) => void }) {
   const { on, haptic } = useMotionLab();
   const { microBurst } = useFx();
+  const { completed, celebrated, token, markCelebrated } = useQuestSim();
   const [phase, setPhase] = useState<Record<string, Phase>>({});
   const [order, setOrder] = useState<string[]>(QUESTS.map((q) => q.id));
   const [steps, setSteps] = useState(1);
+  const [condensedNote, setCondensedNote] = useState<string | null>(null);
   const xpRefs = useRef<Record<string, HTMLElement | null>>({});
   const cardRefs = useRef<Record<string, HTMLElement | null>>({});
   const prevRects = useRef<Record<string, DOMRect>>({});
   const timers = useRef<number[]>([]);
+  const state = useRef({ completed, celebrated, markCelebrated, onEarnXp, haptic, microBurst });
+  state.current = { completed, celebrated, markCelebrated, onEarnXp, haptic, microBurst };
   const activeIds = order.filter((id) => (phase[id] ?? "idle") !== "done");
   const doneIds = order.filter((id) => phase[id] === "done");
   const activeCount = useCountUp(QUESTS.length + 3, on("entrance"), 900, 700);
 
   useEffect(() => () => timers.current.forEach((t) => window.clearTimeout(t)), []);
-  const later = (fn: () => void, ms: number) => timers.current.push(window.setTimeout(fn, ms));
 
   /* ---- FLIP list reorder ---- */
   useLayoutEffect(() => {
@@ -165,35 +175,95 @@ export function Quests({ onEarnXp }: { onEarnXp: (amount: number, el: HTMLElemen
     prevRects.current = next;
   }, [order, phase]);
 
-  const complete = useCallback(
-    (q: Quest, el: HTMLElement | null) => {
-      if ((phase[q.id] ?? "idle") !== "idle") return;
-      haptic("medium");
-      setPhase((p) => ({ ...p, [q.id]: "celebrate" }));
+  /* ---- Page entry: detect quests completed elsewhere and celebrate them in a FIFO queue ---- */
+  useEffect(() => {
+    if (!token) return;
+    let cancelled = false;
+    const { completed: done, celebrated: seen } = state.current;
 
-      later(() => {
-        haptic("success");
-        microBurst(xpRefs.current[q.id] ?? el);
-      }, T.burst);
+    // already-seen completions render straight into the completed list, no animation
+    const silent = QUEST_IDS.filter((id) => done.includes(id) && seen.includes(id));
+    const queue = QUEST_IDS.filter((id) => done.includes(id) && !seen.includes(id));
 
-      later(() => onEarnXp(q.xp, xpRefs.current[q.id] ?? el), T.xpPop);
+    setCondensedNote(null);
+    setPhase(Object.fromEntries(silent.map((id) => [id, "done" as Phase])));
+    setOrder([...QUEST_IDS.filter((id) => !silent.includes(id)), ...silent]);
+    if (!queue.length) return;
 
-      later(() => {
-        setPhase((p) => ({ ...p, [q.id]: "moving" }));
-        setOrder((o) => [...o.filter((x) => x !== q.id), q.id]);
-      }, T.move);
+    const wait = (ms: number) =>
+      new Promise<void>((resolve) => {
+        timers.current.push(window.setTimeout(resolve, ms));
+      });
 
-      later(() => setPhase((p) => ({ ...p, [q.id]: "done" })), T.settle - 100);
-    },
-    [phase, haptic, microBurst, onEarnXp],
-  );
+    const moveToDone = (id: string) => {
+      setPhase((p) => ({ ...p, [id]: "moving" }));
+      setOrder((o) => [...o.filter((x) => x !== id), id]);
+    };
 
-  const reset = () => {
-    haptic("light");
-    setPhase({});
-    setOrder(QUESTS.map((q) => q.id));
-    setSteps(1);
-  };
+    const celebrate = async (id: string) => {
+      const q = QUESTS.find((x) => x.id === id)!;
+      const el = () => xpRefs.current[id] ?? cardRefs.current[id] ?? null;
+      state.current.haptic("medium");
+      setPhase((p) => ({ ...p, [id]: "celebrate" }));
+
+      await wait(T.burst);
+      if (cancelled) return;
+      state.current.haptic("success");
+      state.current.microBurst(el());
+
+      await wait(T.xpPop - T.burst);
+      if (cancelled) return;
+      state.current.onEarnXp(q.xp, el());
+
+      await wait(T.move - T.xpPop);
+      if (cancelled) return;
+      moveToDone(id);
+
+      await wait(T.settle - 100 - T.move);
+      if (cancelled) return;
+      setPhase((p) => ({ ...p, [id]: "done" }));
+      state.current.markCelebrated(id);
+
+      await wait(T.end - (T.settle - 100));
+    };
+
+    const condense = async (ids: string[]) => {
+      setCondensedNote(`+${ids.length} görev daha tamamlandı`);
+      for (const id of ids) {
+        if (cancelled) return;
+        const q = QUESTS.find((x) => x.id === id)!;
+        state.current.haptic("light");
+        setPhase((p) => ({ ...p, [id]: "moving" }));
+        setOrder((o) => [...o.filter((x) => x !== id), id]);
+        state.current.onEarnXp(q.xp, xpRefs.current[id] ?? cardRefs.current[id] ?? null);
+        await wait(240);
+        if (cancelled) return;
+        setPhase((p) => ({ ...p, [id]: "done" }));
+        state.current.markCelebrated(id);
+        await wait(160);
+      }
+      await wait(900);
+      if (!cancelled) setCondensedNote(null);
+    };
+
+    (async () => {
+      const full = queue.slice(0, FULL_CELEBRATION_LIMIT);
+      const rest = queue.slice(FULL_CELEBRATION_LIMIT);
+      for (const id of full) {
+        if (cancelled) return;
+        await celebrate(id);
+        if (cancelled) return;
+        await wait(QUEUE_GAP);
+      }
+      if (rest.length && !cancelled) await condense(rest);
+    })();
+
+    return () => {
+      cancelled = true;
+      timers.current.forEach((t) => window.clearTimeout(t));
+      timers.current = [];
+    };
+  }, [token]);
 
   const byId = (id: string) => QUESTS.find((q) => q.id === id)!;
 
@@ -203,19 +273,22 @@ export function Quests({ onEarnXp }: { onEarnXp: (amount: number, el: HTMLElemen
         <div>
           <h2 className="font-display text-xl font-extrabold text-ink">Görevlerini Tamamla</h2>
           <p className="text-xs text-ink-soft">
-            {activeIds.length ? activeIds.length : 0} / {activeCount} Aktif Görev
+            <span
+              key={activeIds.length}
+              className="inline-block font-bold text-grape [animation:iclub-pop-in_420ms_var(--ease-spring)_both]"
+            >
+              {activeIds.length}
+            </span>{" "}
+            / {activeCount} Aktif Görev
           </p>
         </div>
         <div className="flex items-center gap-3">
-          {doneIds.length > 0 && (
-            <button
-              type="button"
-              onClick={reset}
-              className="press-spring flex items-center gap-1 rounded-full bg-muted px-2.5 py-1 text-[11px] font-bold text-ink-soft"
+          {condensedNote && (
+            <span
+              className="rounded-full bg-mint/15 px-2.5 py-1 text-[11px] font-bold text-mint [animation:iclub-pop-in_420ms_var(--ease-spring)_both]"
             >
-              <RotateCcw className="size-3" />
-              Sıfırla
-            </button>
+              ✨ {condensedNote}
+            </span>
           )}
           <button
             type="button"
@@ -243,7 +316,6 @@ export function Quests({ onEarnXp }: { onEarnXp: (amount: number, el: HTMLElemen
               microBurst(el);
               setSteps((s) => s + 1);
             }}
-            onComplete={(el) => complete(byId(id), el)}
             registerCard={(el) => {
               cardRefs.current[id] = el;
             }}
@@ -256,7 +328,7 @@ export function Quests({ onEarnXp }: { onEarnXp: (amount: number, el: HTMLElemen
 
       {doneIds.length > 0 && (
         <div className="mt-6">
-          <h3 className="flex items-center gap-1.5 text-xs font-extrabold tracking-wide text-ink-soft uppercase">
+          <h3 className="flex items-center gap-1.5 text-xs font-extrabold tracking-wide text-ink-soft uppercase [animation:iclub-rise-in_520ms_cubic-bezier(0.16,1,0.3,1)_both]">
             <Check className="size-3.5 text-mint" strokeWidth={4} />
             Tamamlanan Görevler
           </h3>
@@ -269,7 +341,6 @@ export function Quests({ onEarnXp }: { onEarnXp: (amount: number, el: HTMLElemen
                 phase="done"
                 steps={3}
                 onAdvanceStep={() => {}}
-                onComplete={() => {}}
                 registerCard={(el) => {
                   cardRefs.current[id] = el;
                 }}
@@ -284,6 +355,7 @@ export function Quests({ onEarnXp }: { onEarnXp: (amount: number, el: HTMLElemen
     </section>
   );
 }
+
 
 function QuestCard({
   quest: q,

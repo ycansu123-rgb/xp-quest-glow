@@ -492,7 +492,8 @@ function QuestCard({
               <button
                 type="button"
                 disabled={finished}
-                onClick={(e) => onComplete(e.currentTarget)}
+                onClick={() => haptic("light")}
+
                 className={cn(
                   "press-spring shrink-0 rounded-full px-3 py-1.5 text-[11px] font-bold text-primary-foreground shadow-[var(--shadow-card)]",
                   on("cta") && "shine-sweep",

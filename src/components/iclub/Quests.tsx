@@ -1,18 +1,19 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   ArrowRight,
   Check,
   Gamepad2,
   Gift,
   QrCode,
-  RotateCcw,
   ShoppingCart,
   Sparkles,
   Wallet,
 } from "lucide-react";
 import { delay, useMotionLab } from "@/lib/motion-lab";
+import { useQuestSim } from "@/lib/quest-sim";
 import { useCountUp, useFx } from "./effects";
 import { cn } from "@/lib/utils";
+
 
 type Quest = {
   id: string;

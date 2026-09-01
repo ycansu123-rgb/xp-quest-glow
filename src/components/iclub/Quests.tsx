@@ -550,15 +550,6 @@ function QuestCard({
             />
           )}
 
-          {phase === "idle" && (
-            <button
-              type="button"
-              onClick={(e) => onComplete(e.currentTarget)}
-              className="press-spring mt-2 w-full rounded-lg border border-dashed border-grape/40 py-1 text-[10px] font-bold tracking-wide text-grape/80 uppercase"
-            >
-              ▶ Demo: Görevi Tamamla
-            </button>
-          )}
         </div>
       </div>
     </article>
